@@ -126,50 +126,66 @@ A single agent with one LLM and no tools:
 
 When you add UC function tools to your agent, the app's service principal needs access:
 
-**`dao_ai.yaml`** gains a tools section:
+**`dao_ai.yaml`** gains functions, tools, and a warehouse:
 ```yaml
 resources:
   llms:
-    default_llm:
+    default_llm: &default_llm
       name: databricks-claude-sonnet-4
-  warehouses:
-    default_warehouse:
-      warehouse_id: abc123
+  functions:
+    my_function: &my_function
+      schema:
+        catalog_name: my_catalog
+        schema_name: my_schema
+      name: my_function
+
+tools:
+  my_function_tool: &my_function_tool
+    name: my_function
+    function:
+      type: unity_catalog
+      resource: *my_function
 
 agents:
   my_agent:
+    name: my_agent
     model: *default_llm
     tools:
-      - catalog.schema.my_function
+      - *my_function_tool
 ```
 
-**`databricks.yaml`** gains a warehouse resource:
+**`databricks.yaml`** gains a serving endpoint resource (the app's service principal needs `CAN_QUERY` to call the model that executes UC functions):
 ```yaml
 resources:
   - name: default_llm
     serving_endpoint:
       name: databricks-claude-sonnet-4
       permission: CAN_QUERY
-  - name: default_warehouse
-    sql_warehouse:
-      id: abc123
-      permission: CAN_USE
 ```
 
 ### Adding vector search (RAG)
 
 For retrieval-augmented generation, you add vector store config:
 
-**`dao_ai.yaml`** adds vector stores:
+**`dao_ai.yaml`** adds a vector store and embedding model:
 ```yaml
 resources:
+  llms:
+    embedding_model: &embedding_model
+      name: databricks-gte-large-en
   vector_stores:
-    knowledge_base:
+    knowledge_base: &knowledge_base
+      embedding_model: *embedding_model
+      endpoint:
+        name: my_vs_endpoint
       index:
-        full_name: catalog.schema.my_index
+        schema:
+          catalog_name: my_catalog
+          schema_name: my_schema
+        name: my_index
 ```
 
-**`databricks.yaml`** adds the vector search index resource.
+**`databricks.yaml`** adds the serving endpoint resource for the embedding model. The vector search index is accessed via the endpoint.
 
 ### Adding Genie rooms, Lakebase, secrets
 
