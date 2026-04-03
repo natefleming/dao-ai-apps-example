@@ -112,7 +112,7 @@ databricks bundle destroy --profile <your-profile>
 
 ## How Configs Evolve
 
-This project starts simple, but as your agent grows in complexity, the three config files evolve together.
+This project starts simple, but as your agent grows in complexity, the three config files evolve together. The examples below are intentionally minimal to illustrate the pattern. For the full range of features -- including MCP tools, guardrails, middleware, multi-agent orchestration, memory, prompt engineering, and more -- see the [dao-ai documentation](https://natefleming.github.io/dao-ai) and the [example configs](https://github.com/natefleming/dao-ai/tree/main/config/examples).
 
 ### Starting point (this project)
 
