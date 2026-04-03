@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=bundle_config_schema.json
+bundle:
+  name: dao-ai-apps-example
+  engine: direct
+
+resources:
+  apps:
+    dao-ai-apps-example:
+      name: dao-ai-apps-example
+      description: A simple DAO AI agent deployed as a Databricks App
+      source_code_path: ${workspace.file_path}
+      config:
+        command:
+          - python
+          - -m
+          - dao_ai.apps.server
+        env:
+          - name: MLFLOW_TRACKING_URI
+            value: databricks
+          - name: MLFLOW_REGISTRY_URI
+            value: databricks-uc
+          - name: DAO_AI_CONFIG_PATH
+            value: dao_ai.yaml
+      resources:
+        - name: default_llm
+          serving_endpoint:
+            name: databricks-claude-sonnet-4
+            permission: CAN_QUERY
+      
+
+targets:
+  dev:
+    default: true
+    mode: development

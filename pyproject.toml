@@ -1,0 +1,12 @@
+[project]
+name = "dao-ai-apps-example"
+version = "0.1.0"
+description = "A simple DAO AI agent deployed as a Databricks App"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dao-ai>=0.1.39",
+]
+
+[project.scripts]
+dao-ai-apps-example = "dao_ai.apps.server:main"

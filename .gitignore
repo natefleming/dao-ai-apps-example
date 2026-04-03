@@ -1,0 +1,10 @@
+.venv/
+.databricks/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+.vscode/
+bundle_config_schema.json
+dao_ai_schema.json
+

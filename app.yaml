@@ -1,0 +1,19 @@
+command:
+  - python
+  - -m
+  - dao_ai.apps.server
+
+env:
+  - name: MLFLOW_TRACKING_URI
+    value: databricks
+  - name: MLFLOW_REGISTRY_URI
+    value: databricks-uc
+  - name: DAO_AI_CONFIG_PATH
+    value: dao_ai.yaml
+
+resources:
+  - name: default_llm
+    type: serving-endpoint
+    serving_endpoint_name: databricks-claude-sonnet-4
+    permissions:
+      - level: CAN_QUERY

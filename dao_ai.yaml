@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=dao_ai_schema.json
+resources:
+  llms:
+    default_llm: &default_llm
+      name: databricks-claude-sonnet-4
+
+agents:
+  simple_agent: &simple_agent
+    name: simple_agent
+    model: *default_llm
+    tools: []
+    prompt: |
+      You are a helpful AI assistant. Answer questions to the best of your ability.
+
+app:
+  name: dao-ai-apps-example
+  registered_model:
+    name: dao_ai_apps_example
+  agents:
+    - *simple_agent
